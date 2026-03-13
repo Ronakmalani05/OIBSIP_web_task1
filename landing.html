@@ -1,0 +1,754 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>LUXE VOYAGE — Extraordinary Travel Experiences</title>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,600;0,700;1,300;1,600;1,700&family=Syne:wght@400;600;700;800&family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet"/>
+<style>
+:root{
+  --pink:#FF2D78;--pink-l:#FF6FA3;--purple:#7C3AED;--violet:#A855F7;
+  --vneon:#C026D3;--deep:#0D0010;--dark:#130018;--card:rgba(255,255,255,0.04);
+  --border:rgba(255,255,255,0.1);--text:#FFF0FA;--muted:rgba(255,240,250,0.72);
+  --g:linear-gradient(135deg,#FF2D78,#A855F7,#7C3AED);
+}
+*,*::before,*::after{margin:0;padding:0;box-sizing:border-box;}
+html{scroll-behavior:smooth;overflow-x:hidden;}
+body{background:var(--deep);color:var(--text);font-family:'DM Sans',sans-serif;overflow-x:hidden;cursor:none;}
+body::before{content:'';position:fixed;inset:0;background-image:url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='4'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.035'/%3E%3C/svg%3E");pointer-events:none;z-index:9997;}
+::-webkit-scrollbar{width:4px;}::-webkit-scrollbar-track{background:var(--deep);}::-webkit-scrollbar-thumb{background:var(--g);border-radius:4px;}
+
+/* CURSOR - desktop only */
+#cur,#cr{position:fixed;border-radius:50%;pointer-events:none;z-index:9999;transform:translate(-50%,-50%);}
+#cur{width:10px;height:10px;background:var(--pink);transition:width .2s,height .2s,background .2s;}
+#cr{width:36px;height:36px;border:1.5px solid var(--violet);transition:width .3s,height .3s;}
+body.hov #cur{width:18px;height:18px;background:var(--vneon);}
+body.hov #cr{width:56px;height:56px;border-color:var(--pink);opacity:.5;}
+@media(hover:none),(pointer:coarse){#cur,#cr{display:none!important;}body{cursor:auto!important;}}
+
+/* LOADER */
+#loader{position:fixed;inset:0;background:var(--deep);z-index:10000;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:24px;transition:opacity .7s .3s,visibility .7s .3s;}
+#loader.gone{opacity:0;visibility:hidden;}
+.ld-logo{font-family:'Cormorant Garamond',serif;font-size:3.5rem;font-weight:700;letter-spacing:8px;background:var(--g);-webkit-background-clip:text;-webkit-text-fill-color:transparent;}
+.ld-bar{width:180px;height:2px;background:rgba(255,255,255,0.1);border-radius:2px;overflow:hidden;}
+.ld-fill{height:100%;background:var(--g);animation:ldFill 2s cubic-bezier(.4,0,.2,1) forwards;}
+@keyframes ldFill{from{width:0}to{width:100%}}
+
+/* SPRINKLES - CSS only, smooth on all devices */
+.sprinkles{position:fixed;inset:0;pointer-events:none;z-index:0;overflow:hidden;}
+.sp{position:absolute;border-radius:50%;animation:spFloat linear infinite;}
+@keyframes spFloat{
+  0%{transform:translateY(100vh) scale(0);opacity:0;}
+  10%{opacity:1;}
+  90%{opacity:.6;}
+  100%{transform:translateY(-10vh) scale(1.2);opacity:0;}
+}
+
+/* NAV */
+nav{position:fixed;top:0;left:0;right:0;z-index:1000;padding:22px 60px;display:flex;justify-content:space-between;align-items:center;background:rgba(13,0,16,.75);backdrop-filter:blur(22px);border-bottom:1px solid var(--border);transition:padding .3s;}
+nav.sc{padding:14px 60px;}
+.logo{font-family:'Cormorant Garamond',serif;font-size:1.75rem;font-weight:700;letter-spacing:4px;text-decoration:none;background:var(--g);-webkit-background-clip:text;-webkit-text-fill-color:transparent;}
+.nl{display:flex;gap:34px;list-style:none;}
+.nl a{color:var(--muted);text-decoration:none;font-size:.8rem;letter-spacing:2.5px;text-transform:uppercase;font-weight:500;transition:color .3s;position:relative;}
+.nl a::after{content:'';position:absolute;bottom:-4px;left:0;width:0;height:1px;background:var(--g);transition:width .3s;}
+.nl a:hover{color:var(--text);}.nl a:hover::after{width:100%;}
+.nr{display:flex;align-items:center;gap:18px;}
+.nbtn{background:var(--g);color:#fff;border:none;padding:11px 26px;font-family:'DM Sans',sans-serif;font-weight:600;font-size:.78rem;letter-spacing:2px;text-transform:uppercase;border-radius:50px;cursor:none;transition:transform .3s,box-shadow .3s;box-shadow:0 4px 20px rgba(255,45,120,.35);}
+.nbtn:hover{transform:translateY(-3px) scale(1.04);box-shadow:0 10px 36px rgba(255,45,120,.6);}
+.hbg{display:none;flex-direction:column;gap:5px;background:none;border:none;cursor:none;}
+.hbg span{width:25px;height:2px;background:var(--text);border-radius:2px;transition:.3s;}
+
+/* MOBILE NAV */
+.mob{position:fixed;inset:0;background:var(--dark);z-index:999;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:38px;transform:translateX(100%);transition:transform .5s cubic-bezier(.16,1,.3,1);}
+.mob.open{transform:translateX(0);}
+.mob a{font-family:'Cormorant Garamond',serif;font-size:2.8rem;font-weight:600;color:var(--text);text-decoration:none;letter-spacing:3px;transition:color .3s;}
+.mob a:hover{color:var(--pink);}
+.mob-x{position:absolute;top:28px;right:28px;background:none;border:none;color:var(--text);font-size:2rem;cursor:none;}
+
+/* HERO */
+.hero{min-height:100vh;position:relative;display:flex;align-items:center;overflow:hidden;padding:0 60px;}
+.orb{position:absolute;border-radius:50%;filter:blur(100px);pointer-events:none;animation:oFlt 8s ease-in-out infinite;}
+.o1{width:700px;height:700px;background:radial-gradient(circle,rgba(168,85,247,.22),transparent 70%);top:-180px;right:-80px;}
+.o2{width:500px;height:500px;background:radial-gradient(circle,rgba(255,45,120,.18),transparent 70%);bottom:-100px;left:-80px;animation-delay:-4s;}
+.o3{width:280px;height:280px;background:radial-gradient(circle,rgba(192,38,211,.18),transparent 70%);top:40%;left:42%;animation-delay:-2s;}
+@keyframes oFlt{0%,100%{transform:translateY(0) scale(1);}50%{transform:translateY(-38px) scale(1.05);}}
+.hgl{position:absolute;inset:0;background-image:linear-gradient(rgba(168,85,247,.04) 1px,transparent 1px),linear-gradient(90deg,rgba(168,85,247,.04) 1px,transparent 1px);background-size:60px 60px;}
+.hc{position:relative;z-index:2;max-width:740px;padding-top:80px;}
+.htag{display:inline-flex;align-items:center;gap:10px;border:1px solid rgba(168,85,247,.4);border-radius:50px;padding:8px 20px;font-size:.72rem;letter-spacing:3px;text-transform:uppercase;color:var(--violet);font-weight:600;margin-bottom:30px;opacity:0;animation:fUp .7s .5s forwards;background:rgba(168,85,247,.08);}
+.pulse{width:8px;height:8px;border-radius:50%;background:var(--pink);animation:pls 1.5s ease-in-out infinite;flex-shrink:0;}
+@keyframes pls{0%,100%{transform:scale(1);}50%{transform:scale(1.6);opacity:.4;}}
+.hh1{font-family:'Cormorant Garamond',serif;font-size:clamp(3.5rem,8.5vw,8.5rem);font-weight:700;line-height:.92;letter-spacing:-2px;margin-bottom:26px;}
+.hh1 .ln{display:block;overflow:hidden;}
+.hh1 .ln span{display:block;opacity:0;transform:translateY(110%);animation:sUp .9s cubic-bezier(.16,1,.3,1) forwards;}
+.l1 span{animation-delay:.6s;}.l2 span{animation-delay:.75s;}.l3 span{animation-delay:.9s;}
+.gr{background:var(--g);-webkit-background-clip:text;-webkit-text-fill-color:transparent;}
+.str{-webkit-text-stroke:2px rgba(255,255,255,.5);color:transparent;}
+@keyframes sUp{to{opacity:1;transform:translateY(0);}}
+@keyframes fUp{from{opacity:0;transform:translateY(20px);}to{opacity:1;transform:translateY(0);}}
+.hd{font-size:1.05rem;color:var(--muted);line-height:1.85;max-width:450px;margin-bottom:44px;font-weight:300;opacity:0;animation:fUp .7s 1.1s forwards;}
+.hbs{display:flex;align-items:center;gap:16px;flex-wrap:wrap;opacity:0;animation:fUp .7s 1.25s forwards;position:relative;z-index:5;}
+@media(max-width:768px){.hbs{flex-direction:column;align-items:stretch;gap:12px;}.bg,.gh{width:100%;justify-content:center;text-align:center;}}
+
+/* BTNS */
+.bg{position:relative;overflow:hidden;display:inline-flex;align-items:center;gap:10px;background:var(--g);color:#fff;padding:15px 42px;font-weight:600;font-size:.86rem;letter-spacing:2px;text-transform:uppercase;text-decoration:none;border-radius:50px;box-shadow:0 6px 28px rgba(255,45,120,.4);transition:transform .3s,box-shadow .3s;}
+.bg::before{content:'';position:absolute;inset:0;background:linear-gradient(135deg,#C026D3,#FF2D78,#A855F7);opacity:0;transition:opacity .3s;border-radius:50px;}
+.bg:hover{transform:translateY(-4px) scale(1.04);box-shadow:0 14px 48px rgba(255,45,120,.6);}
+.bg:hover::before{opacity:1;}
+.bg span,.bg .ai{position:relative;z-index:1;}
+.bg .ai{transition:transform .3s;}.bg:hover .ai{transform:translateX(6px);}
+.gh{display:inline-flex;align-items:center;gap:12px;color:var(--text);text-decoration:none;font-size:.86rem;font-weight:500;border:1px solid var(--border);padding:15px 30px;border-radius:50px;backdrop-filter:blur(10px);transition:all .3s;}
+.gh:hover{border-color:var(--violet);background:rgba(168,85,247,.08);gap:20px;}
+.pi{width:32px;height:32px;border-radius:50%;background:rgba(255,255,255,.1);display:flex;align-items:center;justify-content:center;font-size:.75rem;transition:background .3s,transform .3s;}
+.gh:hover .pi{background:var(--violet);transform:scale(1.15);}
+
+/* HERO CHIPS */
+.hchips{position:absolute;right:60px;top:50%;transform:translateY(-50%);display:flex;flex-direction:column;gap:14px;opacity:0;animation:fUp .7s 1.4s forwards;}
+.chip{background:rgba(255,255,255,.05);border:1px solid rgba(168,85,247,.2);border-radius:16px;padding:16px 20px;display:flex;align-items:center;gap:14px;backdrop-filter:blur(20px);transition:all .4s cubic-bezier(.16,1,.3,1);cursor:none;}
+.chip:hover{background:rgba(168,85,247,.12);border-color:rgba(168,85,247,.5);transform:translateX(-8px) scale(1.03);box-shadow:0 10px 38px rgba(168,85,247,.2);}
+.ce{font-size:1.7rem;}
+.ct .ctit{font-weight:600;font-size:.92rem;margin-bottom:2px;}
+.ct .cs{font-size:.72rem;color:var(--muted);letter-spacing:1px;}
+.cp{margin-left:auto;font-family:'Syne',sans-serif;font-weight:700;font-size:.88rem;color:var(--pink);}
+
+/* SCROLL HINT */
+.sh{position:absolute;bottom:30px;left:50%;transform:translateX(-50%);display:flex;align-items:center;gap:10px;font-size:.68rem;letter-spacing:3px;text-transform:uppercase;color:var(--muted);z-index:3;opacity:0;animation:fUp .7s 1.6s forwards;}
+.sl{width:1px;height:40px;background:linear-gradient(to bottom,var(--pink),transparent);animation:sla 2s ease-in-out infinite;}
+@keyframes sla{0%,100%{opacity:.4;transform:scaleY(1);}50%{opacity:1;transform:scaleY(1.25);}}
+@media(max-width:768px){.sh{display:none;}}
+
+/* MARQUEE */
+.mq{padding:17px 0;overflow:hidden;background:var(--g);position:relative;z-index:2;}
+.mt{display:flex;animation:mqa 18s linear infinite;white-space:nowrap;}
+.mi{font-family:'Syne',sans-serif;font-size:.82rem;letter-spacing:4px;color:rgba(255,255,255,.85);padding:0 34px;display:flex;align-items:center;gap:34px;text-transform:uppercase;font-weight:600;}
+.ms{color:rgba(255,255,255,.55);font-size:.58rem;}
+@keyframes mqa{from{transform:translateX(0);}to{transform:translateX(-50%);}}
+
+/* STATS */
+.stats{display:grid;grid-template-columns:repeat(4,1fr);border-bottom:1px solid var(--border);}
+.sb{padding:48px 38px;border-right:1px solid var(--border);position:relative;overflow:hidden;transition:background .4s;}
+.sb:last-child{border-right:none;}
+.sb::after{content:'';position:absolute;bottom:0;left:0;right:0;height:2px;background:var(--g);transform:scaleX(0);transform-origin:left;transition:transform .5s cubic-bezier(.16,1,.3,1);}
+.sb:hover{background:rgba(255,45,120,.04);}
+.sb:hover::after{transform:scaleX(1);}
+.sn{font-family:'Cormorant Garamond',serif;font-size:3.6rem;font-weight:700;background:var(--g);-webkit-background-clip:text;-webkit-text-fill-color:transparent;display:block;line-height:1;margin-bottom:8px;}
+.sl2{font-size:.76rem;letter-spacing:3px;text-transform:uppercase;color:var(--muted);font-weight:500;}
+
+/* SECTION */
+.sec{padding:110px 60px;}
+.ey{display:inline-flex;align-items:center;gap:10px;font-size:.7rem;letter-spacing:4px;text-transform:uppercase;color:var(--pink);font-weight:600;margin-bottom:16px;}
+.ey::before{content:'';width:26px;height:1px;background:var(--pink);}
+.st{font-family:'Cormorant Garamond',serif;font-size:clamp(2.4rem,5vw,4.8rem);font-weight:700;line-height:.95;letter-spacing:-2px;}
+.st em{font-style:italic;background:var(--g);-webkit-background-clip:text;-webkit-text-fill-color:transparent;}
+
+/* REVEAL */
+.rv{opacity:0;transform:translateY(50px);transition:opacity .9s cubic-bezier(.16,1,.3,1),transform .9s cubic-bezier(.16,1,.3,1);}
+.rvl{opacity:0;transform:translateX(-50px);transition:opacity .9s cubic-bezier(.16,1,.3,1),transform .9s cubic-bezier(.16,1,.3,1);}
+.rvr{opacity:0;transform:translateX(50px);transition:opacity .9s cubic-bezier(.16,1,.3,1),transform .9s cubic-bezier(.16,1,.3,1);}
+.rv.vis,.rvl.vis,.rvr.vis{opacity:1;transform:translate(0);}
+
+/* DEST */
+.dh{display:flex;justify-content:space-between;align-items:flex-end;margin-bottom:56px;}
+.la{display:inline-flex;align-items:center;gap:8px;color:var(--text);text-decoration:none;font-size:.78rem;letter-spacing:2px;text-transform:uppercase;font-weight:500;border-bottom:1px solid var(--border);padding-bottom:4px;transition:color .3s,border-color .3s,gap .3s;}
+.la:hover{color:var(--pink);border-color:var(--pink);gap:14px;}
+.dg{display:grid;grid-template-columns:1.6fr 1fr 1fr;grid-template-rows:auto auto;gap:14px;}
+.dc{position:relative;border-radius:22px;overflow:hidden;cursor:none;transition:transform .5s cubic-bezier(.16,1,.3,1),box-shadow .5s;}
+.dc:hover{transform:translateY(-10px) scale(1.015);box-shadow:0 30px 70px rgba(168,85,247,.3);}
+.dc.big{grid-row:1/3;}
+.dc.big .di{height:100%;min-height:520px;}
+.dc:not(.big) .di{height:228px;}
+.di{width:100%;position:relative;overflow:hidden;display:flex;align-items:center;justify-content:center;}
+.db{position:absolute;inset:0;transition:transform .7s cubic-bezier(.16,1,.3,1);}
+.dc:hover .db{transform:scale(1.12);}
+/* Scene emoji layers on dest cards */
+.db::after{position:absolute;top:50%;left:50%;transform:translate(-50%,-60%);font-size:6rem;opacity:.2;pointer-events:none;filter:drop-shadow(0 8px 16px rgba(0,0,0,.4));}
+/* DESTINATION CARD BACKGROUNDS — rich scene gradients */
+.b1{background:linear-gradient(180deg,#1a6fa8 0%,#2596d4 25%,#f5c842 55%,#e8845a 70%,#c45c3c 100%);position:relative;}
+.b1::after{content:'🏛️';position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);font-size:5rem;opacity:.35;pointer-events:none;}
+.b2{background:linear-gradient(180deg,#0d5c2e 0%,#1a8c44 30%,#4db870 55%,#a8d878 75%,#f5e6a0 100%);}
+.b2::after{content:'🌿';position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);font-size:5rem;opacity:.3;pointer-events:none;}
+.b3{background:linear-gradient(180deg,#1a0530 0%,#3d1a6e 25%,#c0392b 50%,#e8845a 70%,#f5c842 90%,#ffe0b2 100%);}
+.b3::after{content:'🏯';position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);font-size:5rem;opacity:.3;pointer-events:none;}
+.b4{background:linear-gradient(180deg,#7b3f00 0%,#c87137 25%,#e8a870 45%,#f5c842 60%,#e8845a 80%,#c45c3c 100%);}
+.b4::after{content:'🕌';position:absolute;top:50%;left:50%;transform:translate(-50%,-60%);font-size:4.5rem;opacity:.3;pointer-events:none;}
+.b5{background:linear-gradient(180deg,#006994 0%,#0099cc 20%,#00bfff 40%,#7de8e8 60%,#b2f0f0 80%,#e0fafa 100%);}
+.b5::after{content:'🐠';position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);font-size:5rem;opacity:.3;pointer-events:none;}
+.dp{position:absolute;inset:0;background-image:radial-gradient(circle,rgba(255,255,255,.12) 1px,transparent 1px);background-size:24px 24px;}
+.dem{position:absolute;top:18px;left:18px;font-size:2.6rem;z-index:3;filter:drop-shadow(0 4px 8px rgba(0,0,0,.3));transition:transform .4s;}
+.dc:hover .dem{transform:scale(1.2) rotate(8deg);}
+.dov{position:absolute;inset:0;background:linear-gradient(to top,rgba(13,0,16,.93),rgba(13,0,16,.25) 55%,transparent 100%);z-index:2;}
+.drt{position:absolute;top:18px;right:18px;z-index:3;background:rgba(255,255,255,.12);backdrop-filter:blur(10px);border:1px solid rgba(255,255,255,.15);border-radius:10px;padding:5px 11px;font-size:.78rem;font-weight:600;display:flex;align-items:center;gap:4px;transition:background .3s,transform .3s;}
+.dc:hover .drt{background:rgba(255,45,120,.35);transform:scale(1.06);}
+.dbd{position:absolute;bottom:0;left:0;right:0;padding:24px;z-index:4;transform:translateY(14px);transition:transform .4s cubic-bezier(.16,1,.3,1);}
+.dc:hover .dbd{transform:translateY(0);}
+.dco{font-size:.66rem;letter-spacing:3px;text-transform:uppercase;color:var(--pink);font-weight:600;margin-bottom:5px;}
+.dn{font-family:'Cormorant Garamond',serif;font-size:1.65rem;font-weight:700;color:#fff;line-height:1.1;margin-bottom:9px;}
+.big .dn{font-size:2.7rem;}
+.dm{display:flex;justify-content:space-between;align-items:center;opacity:0;transform:translateY(10px);transition:opacity .4s .08s,transform .4s .08s;}
+.dc:hover .dm{opacity:1;transform:translateY(0);}
+.dpr{font-family:'Syne',sans-serif;font-weight:700;font-size:1.05rem;color:var(--text);}
+.dtg{background:rgba(255,45,120,.85);color:#fff;font-size:.66rem;letter-spacing:1.5px;text-transform:uppercase;padding:5px 11px;border-radius:50px;font-weight:600;}
+
+/* PACKAGES */
+.pkg{background:linear-gradient(180deg,transparent,rgba(124,58,237,.05),transparent);}
+.pg{display:grid;grid-template-columns:repeat(3,1fr);gap:22px;margin-top:56px;}
+.pc{background:var(--card);border:1px solid var(--border);border-radius:22px;padding:34px;position:relative;overflow:hidden;cursor:none;transition:all .5s cubic-bezier(.16,1,.3,1);}
+.pc::before{content:'';position:absolute;inset:0;border-radius:22px;background:linear-gradient(135deg,rgba(255,45,120,.1),rgba(168,85,247,.05));opacity:0;transition:opacity .4s;}
+.pc:hover{transform:translateY(-12px);border-color:rgba(168,85,247,.4);box-shadow:0 24px 60px rgba(168,85,247,.2);}
+.pc:hover::before{opacity:1;}
+.pc.ft{background:var(--g);border-color:transparent;box-shadow:0 12px 50px rgba(255,45,120,.3);}
+.pc.ft:hover{transform:translateY(-12px) scale(1.02);box-shadow:0 28px 70px rgba(255,45,120,.5);}
+.pico{width:54px;height:54px;border-radius:14px;background:rgba(255,255,255,.1);display:flex;align-items:center;justify-content:center;font-size:1.55rem;margin-bottom:22px;transition:transform .4s,background .3s;}
+.pc:hover .pico{transform:rotate(8deg) scale(1.1);background:rgba(255,255,255,.2);}
+.pn{font-family:'Syne',sans-serif;font-size:1.15rem;font-weight:700;margin-bottom:9px;}
+.pd{font-size:.86rem;color:var(--muted);line-height:1.7;margin-bottom:22px;}
+.pc.ft .pd{color:rgba(255,255,255,.8);}
+.ppr{display:flex;align-items:baseline;gap:6px;margin-bottom:22px;}
+.pp{font-family:'Cormorant Garamond',serif;font-size:2.7rem;font-weight:700;}
+.pper{font-size:.78rem;color:var(--muted);letter-spacing:1px;}
+.pc.ft .pper{color:rgba(255,255,255,.7);}
+.pfl{list-style:none;display:flex;flex-direction:column;gap:11px;margin-bottom:30px;}
+.pfl li{font-size:.83rem;color:var(--muted);display:flex;align-items:center;gap:10px;}
+.pc.ft .pfl li{color:rgba(255,255,255,.85);}
+.pfl li::before{content:'✦';color:var(--pink);font-size:.68rem;flex-shrink:0;}
+.pc.ft .pfl li::before{color:rgba(255,255,255,.7);}
+.pb{display:block;text-align:center;padding:13px 22px;border-radius:50px;font-weight:600;font-size:.8rem;letter-spacing:2px;text-transform:uppercase;text-decoration:none;cursor:none;transition:all .3s;}
+.pbo{border:1px solid rgba(168,85,247,.4);color:var(--text);}
+.pbo:hover{background:rgba(168,85,247,.15);border-color:var(--violet);transform:scale(1.02);}
+.pbw{background:#fff;color:var(--deep);}
+.pbw:hover{transform:scale(1.04);box-shadow:0 8px 28px rgba(0,0,0,.3);}
+.pbg{position:absolute;top:18px;right:18px;background:rgba(255,255,255,.2);backdrop-filter:blur(10px);color:#fff;font-size:.63rem;letter-spacing:2px;text-transform:uppercase;padding:5px 12px;border-radius:50px;font-weight:700;}
+
+/* WHY */
+.why{background:rgba(255,255,255,.01);border-top:1px solid var(--border);border-bottom:1px solid var(--border);}
+.wg{display:grid;grid-template-columns:1fr 1fr;gap:80px;align-items:center;margin-top:56px;}
+.wv{position:relative;height:580px;}
+.wb{position:absolute;width:300px;height:390px;left:0;top:50%;transform:translateY(-55%);border-radius:26px;overflow:hidden;background:linear-gradient(170deg,#1a0535 0%,#4a0e82 25%,#c0392b 50%,#e8845a 72%,#f5c842 90%,#fff3b0 100%);box-shadow:0 40px 90px rgba(255,45,120,.35);transition:transform .5s cubic-bezier(.16,1,.3,1);}
+.wb:hover{transform:translateY(-55%) scale(1.04);}
+.ws{position:absolute;width:210px;height:265px;right:20px;top:50%;transform:translateY(-50%) rotate(5deg);border-radius:20px;overflow:hidden;background:linear-gradient(170deg,#003d5c 0%,#006994 20%,#0099cc 42%,#33c3e8 62%,#80e0f0 80%,#e8ffff 100%);box-shadow:0 24px 60px rgba(124,58,237,.4);transition:transform .5s cubic-bezier(.16,1,.3,1);}
+.ws:hover{transform:translateY(-50%) rotate(5deg) scale(1.06);}
+.wci{width:100%;height:100%;display:flex;flex-direction:column;justify-content:flex-end;padding:24px;background:linear-gradient(to top,rgba(13,0,16,.8),transparent 60%);position:relative;}
+.wcd{position:absolute;top:0;left:0;right:0;height:55%;background-image:radial-gradient(circle,rgba(255,255,255,.14) 1px,transparent 1px);background-size:18px 18px;}
+.wfl{position:absolute;bottom:-18px;left:50%;transform:translateX(-50%);background:rgba(20,0,30,.85);backdrop-filter:blur(20px);border:1px solid rgba(168,85,247,.3);border-radius:14px;padding:14px 22px;white-space:nowrap;display:flex;align-items:center;gap:14px;box-shadow:0 12px 40px rgba(168,85,247,.2);animation:flt 3s ease-in-out infinite;}
+@keyframes flt{0%,100%{transform:translateX(-50%) translateY(0);}50%{transform:translateX(-50%) translateY(-8px);}}
+.wfi{font-size:1.5rem;}
+.wft .t1{font-weight:600;font-size:.88rem;}
+.wft .t2{font-size:.7rem;color:var(--muted);}
+.wpts{display:flex;flex-direction:column;gap:18px;margin-top:42px;}
+.wp{display:flex;align-items:flex-start;gap:18px;padding:20px;border:1px solid var(--border);border-radius:14px;transition:all .4s cubic-bezier(.16,1,.3,1);cursor:none;}
+.wp:hover{border-color:rgba(168,85,247,.4);background:rgba(168,85,247,.05);transform:translateX(10px);box-shadow:0 8px 28px rgba(168,85,247,.12);}
+.wi{width:48px;height:48px;border-radius:13px;flex-shrink:0;background:linear-gradient(135deg,rgba(255,45,120,.18),rgba(168,85,247,.13));border:1px solid rgba(168,85,247,.22);display:flex;align-items:center;justify-content:center;font-size:1.35rem;transition:transform .4s,background .4s;}
+.wp:hover .wi{transform:rotate(10deg) scale(1.1);background:rgba(168,85,247,.24);}
+.wpt h4{font-size:.97rem;font-weight:600;margin-bottom:4px;}
+.wpt p{font-size:.83rem;color:var(--muted);line-height:1.65;}
+
+/* GALLERY */
+.gg{display:grid;grid-template-columns:repeat(4,1fr);grid-template-rows:repeat(2,215px);gap:11px;margin-top:56px;}
+.gi{border-radius:15px;overflow:hidden;position:relative;cursor:none;transition:transform .5s cubic-bezier(.16,1,.3,1),box-shadow .5s;}
+.gi:hover{transform:scale(1.04);box-shadow:0 20px 50px rgba(168,85,247,.3);z-index:2;}
+.gi.w{grid-column:span 2;}.gi.t{grid-row:span 2;}
+.gbg{width:100%;height:100%;transition:transform .6s cubic-bezier(.16,1,.3,1);}
+.gi:hover .gbg{transform:scale(1.1);}
+/* GALLERY BACKGROUNDS — vivid nature scenes, no external URLs */
+.g1{background:linear-gradient(170deg,#0d4f8c 0%,#1a7fc1 20%,#63b8e8 38%,#f7e8c0 50%,#e8a060 65%,#c45c3c 80%,#7b2d0d 100%);} /* Santorini sunset */
+.g2{background:linear-gradient(160deg,#0a3d1f 0%,#1a6b35 20%,#2e9e50 40%,#5abf72 58%,#9ad68a 75%,#d4f0c0 100%);} /* Bali jungle */
+.g3{background:linear-gradient(180deg,#0a0018 0%,#1a0535 20%,#4a0e82 40%,#c0392b 58%,#e8845a 74%,#f5c842 88%,#fff3b0 100%);} /* Tokyo neon */
+.g4{background:linear-gradient(180deg,#003d5c 0%,#006994 18%,#0099cc 35%,#33c3e8 52%,#80e0f0 68%,#b8f4f8 82%,#e8ffff 100%);} /* Maldives ocean */
+.g5{background:linear-gradient(165deg,#1a0d05 0%,#5c3010 18%,#c87137 35%,#e8a870 50%,#f5d080 65%,#e8c8a0 80%,#f5ead0 100%);} /* Paris golden */
+.g6{background:linear-gradient(160deg,#3d1500 0%,#8b3a00 20%,#d4701a 38%,#f09030 52%,#f5b840 65%,#e8d090 80%,#f5e8c0 100%);} /* Morocco spice */
+.gdts{position:absolute;inset:0;background-image:radial-gradient(circle,rgba(255,255,255,.06) 1px,transparent 1px);background-size:22px 22px;pointer-events:none;}
+.gscene{position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);font-size:2.8rem;z-index:1;opacity:.25;letter-spacing:8px;pointer-events:none;filter:drop-shadow(0 4px 10px rgba(0,0,0,.4));transition:opacity .4s,transform .4s;}
+.gi:hover .gscene{opacity:.4;transform:translate(-50%,-50%) scale(1.15);}
+.gov{position:absolute;inset:0;background:linear-gradient(to top,rgba(13,0,16,.75) 0%,rgba(13,0,16,.15) 55%,transparent 100%);opacity:1;transition:opacity .4s;}
+.gi:hover .gov{opacity:1;}
+.glb{position:absolute;bottom:14px;left:14px;z-index:2;opacity:1;transform:translateY(0);transition:all .4s;}
+.gi:hover .glb{opacity:1;transform:translateY(0);}
+.glb span{font-family:'Cormorant Garamond',serif;font-size:1.15rem;font-weight:700;color:#fff;display:block;text-shadow:0 2px 8px rgba(0,0,0,.6);}
+.glb small{font-size:.68rem;color:rgba(255,255,255,.85);letter-spacing:2px;text-transform:uppercase;text-shadow:0 1px 4px rgba(0,0,0,.6);}
+
+/* TESTI */
+.tg{display:grid;grid-template-columns:repeat(3,1fr);gap:20px;margin-top:56px;}
+.tc{background:var(--card);border:1px solid var(--border);border-radius:20px;padding:32px;position:relative;overflow:hidden;cursor:none;transition:all .5s cubic-bezier(.16,1,.3,1);}
+.tc::after{content:'';position:absolute;bottom:0;left:0;right:0;height:2px;background:var(--g);transform:scaleX(0);transform-origin:left;transition:transform .5s;}
+.tc:hover{transform:translateY(-10px);border-color:rgba(255,45,120,.3);box-shadow:0 24px 60px rgba(168,85,247,.2);}
+.tc:hover::after{transform:scaleX(1);}
+.tst{display:flex;gap:3px;margin-bottom:16px;}
+.tst span{color:var(--pink);font-size:.88rem;}
+.tqm{font-family:'Cormorant Garamond',serif;font-size:3.8rem;color:var(--pink);line-height:.8;margin-bottom:12px;opacity:.35;}
+.tt{font-size:.9rem;color:var(--muted);line-height:1.85;margin-bottom:24px;font-style:italic;}
+.tau{display:flex;align-items:center;gap:13px;}
+.tav{width:44px;height:44px;border-radius:50%;flex-shrink:0;display:flex;align-items:center;justify-content:center;font-size:1.25rem;background:linear-gradient(135deg,rgba(255,45,120,.2),rgba(168,85,247,.2));border:2px solid rgba(168,85,247,.3);transition:transform .3s;}
+.tc:hover .tav{transform:scale(1.1) rotate(5deg);}
+.tnm{font-weight:600;font-size:.9rem;margin-bottom:2px;}
+.tlc{font-size:.72rem;color:var(--muted);letter-spacing:1px;}
+
+/* NEWSLETTER */
+.nlsec{margin:0 60px 100px;background:var(--g);border-radius:30px;padding:88px 76px;position:relative;overflow:hidden;display:grid;grid-template-columns:1fr 1fr;gap:56px;align-items:center;}
+.nlsec::before{content:'';position:absolute;inset:0;background-image:radial-gradient(circle,rgba(255,255,255,.06) 1px,transparent 1px);background-size:28px 28px;}
+.nlsec::after{content:'';position:absolute;top:-80px;right:-80px;width:360px;height:360px;border-radius:50%;background:radial-gradient(circle,rgba(255,255,255,.1),transparent 70%);pointer-events:none;}
+.nlt{position:relative;z-index:1;}
+.nley{font-size:.7rem;letter-spacing:4px;text-transform:uppercase;color:rgba(255,255,255,.7);font-weight:600;margin-bottom:14px;display:block;}
+.nltt{font-family:'Cormorant Garamond',serif;font-size:clamp(1.9rem,4vw,3.3rem);font-weight:700;color:#fff;line-height:1;letter-spacing:-1px;margin-bottom:12px;}
+.nlsb{color:rgba(255,255,255,.75);font-size:.93rem;line-height:1.7;}
+.nlf{position:relative;z-index:1;display:flex;flex-direction:column;gap:13px;}
+.nlir{display:flex;}
+.nli{flex:1;background:rgba(255,255,255,.15);border:1px solid rgba(255,255,255,.25);border-right:none;color:#fff;padding:15px 20px;font-family:'DM Sans',sans-serif;font-size:.88rem;outline:none;border-radius:50px 0 0 50px;transition:background .3s,border-color .3s;}
+.nli::placeholder{color:rgba(255,255,255,.5);}
+.nli:focus{background:rgba(255,255,255,.22);}
+.nls{background:#fff;color:var(--deep);border:none;padding:15px 28px;font-family:'DM Sans',sans-serif;font-weight:700;font-size:.8rem;letter-spacing:2px;text-transform:uppercase;cursor:none;border-radius:0 50px 50px 0;transition:transform .3s,box-shadow .3s;}
+.nls:hover{transform:scale(1.04);box-shadow:0 8px 22px rgba(0,0,0,.25);}
+.nln{font-size:.73rem;color:rgba(255,255,255,.55);}
+
+/* CTA */
+.cta{text-align:center;padding:110px 60px;position:relative;overflow:hidden;border-top:1px solid var(--border);}
+.ctao{position:absolute;width:600px;height:600px;border-radius:50%;top:50%;left:50%;transform:translate(-50%,-50%);background:radial-gradient(circle,rgba(168,85,247,.12),transparent 70%);pointer-events:none;}
+.ctaey{font-size:.7rem;letter-spacing:4px;text-transform:uppercase;color:var(--violet);font-weight:600;margin-bottom:18px;display:block;}
+.ctat{font-family:'Cormorant Garamond',serif;font-size:clamp(3rem,7vw,6.5rem);font-weight:700;line-height:.93;letter-spacing:-3px;margin-bottom:22px;}
+.ctasb{color:var(--muted);font-size:1.02rem;max-width:460px;margin:0 auto 44px;line-height:1.75;}
+.ctabs{display:flex;justify-content:center;align-items:center;gap:18px;flex-wrap:wrap;}
+
+/* FOOTER */
+footer{padding:76px 60px 34px;border-top:1px solid var(--border);}
+.fg{display:grid;grid-template-columns:2fr 1fr 1fr 1fr;gap:56px;margin-bottom:56px;}
+.flog{font-family:'Cormorant Garamond',serif;font-size:2.1rem;font-weight:700;display:block;margin-bottom:16px;letter-spacing:4px;background:var(--g);-webkit-background-clip:text;-webkit-text-fill-color:transparent;}
+.fdesc{color:var(--muted);font-size:.86rem;line-height:1.8;max-width:280px;margin-bottom:26px;}
+.socs{display:flex;gap:9px;}
+.sb2{width:38px;height:38px;border-radius:11px;border:1px solid var(--border);display:flex;align-items:center;justify-content:center;font-size:.9rem;text-decoration:none;color:var(--text);transition:all .35s cubic-bezier(.16,1,.3,1);}
+.sb2:hover{background:var(--g);border-color:transparent;transform:translateY(-5px) scale(1.08);box-shadow:0 10px 26px rgba(255,45,120,.4);}
+.fc h5{font-size:.7rem;letter-spacing:3.5px;text-transform:uppercase;color:var(--pink);font-weight:600;margin-bottom:20px;}
+.fc ul{list-style:none;display:flex;flex-direction:column;gap:10px;}
+.fc a{color:var(--muted);text-decoration:none;font-size:.86rem;transition:color .3s,padding-left .3s;display:inline-block;}
+.fc a:hover{color:var(--text);padding-left:8px;}
+.fb{border-top:1px solid var(--border);padding-top:26px;display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:10px;}
+.fb p,.fb .md{color:rgba(255,240,250,.45);font-size:.76rem;}
+.fb .md span{background:var(--g);-webkit-background-clip:text;-webkit-text-fill-color:transparent;font-weight:700;}
+
+
+
+/* RESPONSIVE */
+@media(max-width:1100px){
+  nav,nav.sc{padding:16px 32px;}
+  .nl{display:none;}.hbg{display:flex;}
+  .hero{padding:0 32px;}.hchips{display:none;}.sh{left:32px;}
+  .sec{padding:80px 32px;}
+  .stats{grid-template-columns:repeat(2,1fr);}
+  .stats .sb:nth-child(2){border-right:none;}
+  .stats .sb:nth-child(3),.stats .sb:nth-child(4){border-top:1px solid var(--border);}
+  .stats .sb:nth-child(4){border-right:none;}
+  .dg{grid-template-columns:1fr 1fr;grid-template-rows:auto;}
+  .dc.big{grid-column:1/3;}.dc.big .di{min-height:360px;}
+  .pg{grid-template-columns:1fr 1fr;}
+  .wg{grid-template-columns:1fr;gap:48px;}
+  .wv{height:380px;order:-1;}
+  .gg{grid-template-columns:repeat(3,1fr);}
+  .tg{grid-template-columns:1fr 1fr;}
+  .nlsec{margin:0 32px 80px;padding:56px 44px;grid-template-columns:1fr;}
+  .fg{grid-template-columns:1fr 1fr;gap:36px;}
+  footer{padding:56px 32px 26px;}
+  .cta{padding:80px 32px;}
+}
+@media(max-width:768px){
+  nav{padding:14px 18px;}
+  .hero{padding:0 18px;min-height:100svh;}
+  .hh1{font-size:clamp(2.8rem,12vw,4.5rem);}
+  .hbs{flex-direction:column;align-items:flex-start;}
+  .sh{left:18px;}
+  .sec{padding:64px 18px;}
+  .stats{grid-template-columns:repeat(2,1fr);}
+  .dg{grid-template-columns:1fr;}
+  .dc.big{grid-column:auto;}.dc.big .di{min-height:280px;}
+  .dc:not(.big) .di{height:195px;}
+  .pg{grid-template-columns:1fr;}
+  .gg{grid-template-columns:repeat(2,1fr);grid-template-rows:repeat(3,175px);}
+  .gi.w{grid-column:span 2;}.gi.t{grid-row:span 1;}
+  .tg{grid-template-columns:1fr;}
+  .nlsec{margin:0 18px 64px;padding:42px 24px;}
+  .nlir{flex-direction:column;}
+  .nli{border-right:1px solid rgba(255,255,255,.25);border-radius:50px;margin-bottom:0;}
+  .nls{border-radius:50px;padding:13px 22px;}
+  .fg{grid-template-columns:1fr;}
+  footer{padding:44px 18px 22px;}
+  .fb{flex-direction:column;text-align:center;}
+
+  .cta{padding:64px 18px;}
+  .dh{flex-direction:column;align-items:flex-start;gap:14px;}
+}
+@media(max-width:480px){
+  .hh1{font-size:clamp(2.3rem,14vw,3.5rem);}
+  .sn{font-size:3rem;}.pg{grid-template-columns:1fr;}
+}
+</style>
+</head>
+<body>
+
+<div id="cur"></div>
+<div id="cr"></div>
+
+<!-- LOADER -->
+<div id="loader">
+  <div class="ld-logo">LUXE VOYAGE</div>
+  <div class="ld-bar"><div class="ld-fill"></div></div>
+</div>
+
+<!-- SPRINKLES -->
+<div class="sprinkles" id="sprinkles"></div>
+
+
+
+<!-- MOBILE NAV -->
+<div class="mob" id="mob">
+  <button class="mob-x" id="mobX" aria-label="Close">✕</button>
+  <a href="javascript:void(0)" onclick="goTo('destinations')">Destinations</a>
+  <a href="javascript:void(0)" onclick="goTo('packages')">Packages</a>
+  <a href="javascript:void(0)" onclick="goTo('gallery')">Gallery</a>
+  <a href="javascript:void(0)" onclick="goTo('testimonials')">Reviews</a>
+  <a href="javascript:void(0)" onclick="goTo('contact')">Contact</a>
+</div>
+
+<!-- NAV -->
+<nav id="nav">
+  <a href="javascript:void(0)" class="logo">LUXE VOYAGE</a>
+  <ul class="nl">
+    <li><a href="javascript:void(0)" onclick="goTo('destinations')" >Destinations</a></li>
+    <li><a href="javascript:void(0)" onclick="goTo('packages')" >Packages</a></li>
+    <li><a href="javascript:void(0)" onclick="goTo('gallery')" >Gallery</a></li>
+    <li><a href="javascript:void(0)" onclick="goTo('testimonials')" >Reviews</a></li>
+    <li><a href="javascript:void(0)" onclick="goTo('contact')" >Contact</a></li>
+  </ul>
+  <div class="nr">
+    <button class="nbtn">Book Now</button>
+    <button class="hbg" id="hbg" aria-label="Menu"><span></span><span></span><span></span></button>
+  </div>
+</nav>
+
+<!-- ── HERO ── -->
+<section class="hero" id="home">
+  <div class="orb o1"></div><div class="orb o2"></div><div class="orb o3"></div>
+  <div class="hgl"></div>
+  <div class="hc">
+    <div class="htag"><span class="pulse"></span>Premium Travel Experiences</div>
+    <h1 class="hh1">
+      <span class="ln l1"><span>Discover</span></span>
+      <span class="ln l2"><span class="gr">Extraordinary</span></span>
+      <span class="ln l3"><span class="str">Worlds</span></span>
+    </h1>
+    <p class="hd">Bespoke journeys crafted for the bold and curious. From Santorini's sunsets to Tokyo's neon lights — we make every trip a masterpiece.</p>
+    <div class="hbs">
+      <a href="javascript:void(0)" onclick="goTo('destinations')"  class="bg"><span>Explore Now</span><span class="ai">→</span></a>
+      <a href="javascript:void(0)" onclick="goTo('packages')"  class="gh"><div class="pi">▶</div>View Packages</a>
+    </div>
+  </div>
+  <div class="hchips">
+    <div class="chip"><span class="ce">🏛️</span><div class="ct"><div class="ctit">Santorini, Greece</div><div class="cs">7 Nights · All Inclusive</div></div><span class="cp">$2,499</span></div>
+    <div class="chip"><span class="ce">🌸</span><div class="ct"><div class="ctit">Kyoto, Japan</div><div class="cs">10 Nights · Private Tour</div></div><span class="cp">$3,199</span></div>
+    <div class="chip"><span class="ce">🌴</span><div class="ct"><div class="ctit">Maldives</div><div class="cs">5 Nights · Overwater Villa</div></div><span class="cp">$4,999</span></div>
+  </div>
+  <div class="sh"><div class="sl"></div>Scroll</div>
+</section>
+
+<!-- MARQUEE -->
+<div class="mq">
+  <div class="mt">
+    <div class="mi">Europe<span class="ms">✦</span></div><div class="mi">Asia Pacific<span class="ms">✦</span></div>
+    <div class="mi">Maldives<span class="ms">✦</span></div><div class="mi">Americas<span class="ms">✦</span></div>
+    <div class="mi">Middle East<span class="ms">✦</span></div><div class="mi">Africa<span class="ms">✦</span></div>
+    <div class="mi">Oceania<span class="ms">✦</span></div><div class="mi">Antarctica<span class="ms">✦</span></div>
+    <div class="mi">Europe<span class="ms">✦</span></div><div class="mi">Asia Pacific<span class="ms">✦</span></div>
+    <div class="mi">Maldives<span class="ms">✦</span></div><div class="mi">Americas<span class="ms">✦</span></div>
+    <div class="mi">Middle East<span class="ms">✦</span></div><div class="mi">Africa<span class="ms">✦</span></div>
+    <div class="mi">Oceania<span class="ms">✦</span></div><div class="mi">Antarctica<span class="ms">✦</span></div>
+  </div>
+</div>
+
+<!-- STATS -->
+<div class="stats rv">
+  <div class="sb"><span class="sn" data-t="194" data-s="+">0</span><span class="sl2">Countries Covered</span></div>
+  <div class="sb"><span class="sn" data-t="48" data-s="K+">0</span><span class="sl2">Happy Travelers</span></div>
+  <div class="sb"><span class="sn" data-t="12" data-s="+">0</span><span class="sl2">Years of Excellence</span></div>
+  <div class="sb"><span class="sn" data-t="99" data-s="%">0</span><span class="sl2">Satisfaction Rate</span></div>
+</div>
+
+<!-- ── DESTINATIONS ── -->
+<section class="sec" id="destinations">
+  <div class="dh rv">
+    <div><div class="ey">Top Picks</div><h2 class="st">Dream <em>Destinations</em></h2></div>
+    <a href="javascript:void(0)" class="la">View All ↗</a>
+  </div>
+  <div class="dg rv">
+    <div class="dc big">
+      <div class="di"><div class="db b1"></div><div class="dp"></div></div>
+      <div class="dem">🇬🇷</div><div class="drt">⭐ 4.9</div><div class="dov"></div>
+      <div class="dbd"><div class="dco">Greece · Europe</div><div class="dn">Santorini<br>Island</div>
+        <div class="dm"><span class="dpr">From $2,499</span><span class="dtg">Editor's Pick</span></div></div>
+    </div>
+    <div class="dc">
+      <div class="di"><div class="db b2"></div><div class="dp"></div></div>
+      <div class="dem">🇮🇩</div><div class="drt">⭐ 4.8</div><div class="dov"></div>
+      <div class="dbd"><div class="dco">Indonesia · Asia</div><div class="dn">Bali</div>
+        <div class="dm"><span class="dpr">From $1,299</span><span class="dtg">🔥 Trending</span></div></div>
+    </div>
+    <div class="dc">
+      <div class="di"><div class="db b3"></div><div class="dp"></div></div>
+      <div class="dem">🇯🇵</div><div class="drt">⭐ 4.9</div><div class="dov"></div>
+      <div class="dbd"><div class="dco">Japan · Asia</div><div class="dn">Tokyo</div>
+        <div class="dm"><span class="dpr">From $2,899</span><span class="dtg">✨ Premium</span></div></div>
+    </div>
+    <div class="dc">
+      <div class="di"><div class="db b4"></div><div class="dp"></div></div>
+      <div class="dem">🇲🇦</div><div class="drt">⭐ 4.7</div><div class="dov"></div>
+      <div class="dbd"><div class="dco">Morocco · Africa</div><div class="dn">Marrakech</div>
+        <div class="dm"><span class="dpr">From $999</span><span class="dtg">💎 Value</span></div></div>
+    </div>
+    <div class="dc">
+      <div class="di"><div class="db b5"></div><div class="dp"></div></div>
+      <div class="dem">🇲🇻</div><div class="drt">⭐ 5.0</div><div class="dov"></div>
+      <div class="dbd"><div class="dco">Maldives · Ocean</div><div class="dn">Maldives</div>
+        <div class="dm"><span class="dpr">From $4,999</span><span class="dtg">🏆 Luxury</span></div></div>
+    </div>
+  </div>
+</section>
+
+<!-- ── PACKAGES ── -->
+<section class="sec pkg" id="packages">
+  <div class="rv" style="text-align:center">
+    <div class="ey" style="justify-content:center;margin:0 auto 16px">Our Offers</div>
+    <h2 class="st">Travel <em>Packages</em></h2>
+  </div>
+  <div class="pg">
+    <div class="pc rv"><div class="pico">🌿</div><div class="pn">Explorer</div>
+      <div class="pd">Perfect for solo adventurers and budget-conscious wanderers ready to discover.</div>
+      <div class="ppr"><span class="pp">$799</span><span class="pper">/ person</span></div>
+      <ul class="pfl"><li>3–5 Night Stays</li><li>Budget Hotels Included</li><li>Group Tours</li><li>Basic Travel Insurance</li><li>Email Support</li></ul>
+      <a href="javascript:void(0)" class="pb pbo">Choose Explorer</a>
+    </div>
+    <div class="pc ft rv"><div class="pbg">Most Popular</div><div class="pico">✈️</div>
+      <div class="pn">Voyager</div>
+      <div class="pd">The complete travel experience for couples and families who want the best.</div>
+      <div class="ppr"><span class="pp">$1,999</span><span class="pper">/ person</span></div>
+      <ul class="pfl"><li>7–10 Night Premium Stays</li><li>Boutique Hotels & Resorts</li><li>Private Guided Tours</li><li>Full Travel Insurance</li><li>24/7 Concierge</li></ul>
+      <a href="javascript:void(0)" class="pb pbw">Choose Voyager</a>
+    </div>
+    <div class="pc rv"><div class="pico">💎</div><div class="pn">Luminary</div>
+      <div class="pd">Ultra-luxury bespoke journeys for those who demand only the extraordinary.</div>
+      <div class="ppr"><span class="pp">$4,999</span><span class="pper">/ person</span></div>
+      <ul class="pfl"><li>10–14 Nights Luxury Villas</li><li>Private Jet Transfers</li><li>Fully Bespoke Itinerary</li><li>VIP Lounge Access</li><li>Personal Butler Service</li></ul>
+      <a href="javascript:void(0)" class="pb pbo">Choose Luminary</a>
+    </div>
+  </div>
+</section>
+
+<!-- ── WHY US ── -->
+<section class="sec why" id="about">
+  <div class="rv"><div class="ey">Why Choose Us</div><h2 class="st">The <em>LUXE</em><br>Difference</h2></div>
+  <div class="wg">
+    <div class="wv rvl">
+      <div class="wb">
+        <div class="wci"><div class="wcd"></div>
+          <div style="font-size:2.8rem;margin-bottom:10px">🌅</div>
+          <div style="font-family:'Cormorant Garamond',serif;font-size:1.9rem;font-weight:700;color:#fff;line-height:1.1;margin-bottom:7px">Bespoke<br>Journeys</div>
+          <div style="font-size:.68rem;letter-spacing:2px;color:rgba(255,255,255,.6)">CRAFTED FOR YOU</div>
+        </div>
+      </div>
+      <div class="ws">
+        <div class="wci"><div class="wcd"></div>
+          <div style="font-size:1.9rem;margin-bottom:7px">✈️</div>
+          <div style="font-family:'Cormorant Garamond',serif;font-size:1.35rem;font-weight:700;color:#fff;line-height:1.1">48K+<br>Travelers</div>
+          <div style="font-size:.65rem;letter-spacing:2px;color:rgba(255,255,255,.6);margin-top:4px">WORLDWIDE</div>
+        </div>
+      </div>
+      <div class="wfl">
+        <div class="wfi">🏆</div>
+        <div class="wft"><div class="t1">Top Rated Agency</div><div class="t2">Trusted by 48K+ Travelers</div></div>
+      </div>
+    </div>
+    <div class="rvr">
+      <div class="ey">Our Promise</div>
+      <h2 class="st" style="font-size:clamp(2rem,3.5vw,3.4rem)">Every Detail,<br><em>Perfected</em></h2>
+      <p style="color:var(--muted);line-height:1.9;margin-top:18px;font-size:.93rem;max-width:450px">From handpicked boutique stays to private guided experiences — every LUXE VOYAGE journey is designed to exceed expectation.</p>
+      <div class="wpts">
+        <div class="wp"><div class="wi">🗺️</div><div class="wpt"><h4>Custom Itinerary Planning</h4><p>Your trip, your vision. Our travel architects design every route to match your exact dream.</p></div></div>
+        <div class="wp"><div class="wi">🏨</div><div class="wpt"><h4>Handpicked Luxury Stays</h4><p>Only the finest boutique hotels, private villas & exclusive resorts that pass our rigorous standards.</p></div></div>
+        <div class="wp"><div class="wi">🛡️</div><div class="wpt"><h4>24/7 Concierge Support</h4><p>Your dedicated travel concierge is always on call — wherever in the world your journey takes you.</p></div></div>
+        <div class="wp"><div class="wi">💳</div><div class="wpt"><h4>Best Price Guarantee</h4><p>Find the same package cheaper? We'll beat it — always, no questions asked.</p></div></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ── GALLERY ── -->
+<section class="sec" id="gallery">
+  <div class="rv" style="text-align:center">
+    <div class="ey" style="justify-content:center;margin:0 auto 16px">Visual Stories</div>
+    <h2 class="st">World Through<br>Our <em>Lens</em></h2>
+  </div>
+  <div class="gg rv">
+  <div class="gi w t"><div class="gbg g1" style="height:100%"></div><div class="gscene">🏛️🌊⛵</div><div class="gdts"></div><div class="gov"></div><div class="glb"><span>Santorini</span><small>Greece</small></div></div>
+    <div class="gi"><div class="gbg g2" style="height:215px"></div><div class="gscene">🌿🌴🦜</div><div class="gdts"></div><div class="gov"></div><div class="glb"><span>Bali</span><small>Indonesia</small></div></div>
+    <div class="gi"><div class="gbg g3" style="height:215px"></div><div class="gscene">🏯🌸🗼</div><div class="gdts"></div><div class="gov"></div><div class="glb"><span>Tokyo</span><small>Japan</small></div></div>
+    <div class="gi w"><div class="gbg g4" style="height:215px"></div><div class="gscene">🐠🌊🏝️</div><div class="gdts"></div><div class="gov"></div><div class="glb"><span>Maldives</span><small>Indian Ocean</small></div></div>
+    <div class="gi"><div class="gbg g5" style="height:215px"></div><div class="gscene">🗼🥐✨</div><div class="gdts"></div><div class="gov"></div><div class="glb"><span>Paris</span><small>France</small></div></div>
+    <div class="gi"><div class="gbg g6" style="height:215px"></div><div class="gscene">🕌🌅🐪</div><div class="gdts"></div><div class="gov"></div><div class="glb"><span>Marrakech</span><small>Morocco</small></div></div>
+  </div>
+</section>
+
+<!-- ── TESTIMONIALS ── -->
+<section class="sec" id="testimonials" style="border-top:1px solid var(--border)">
+  <div class="rv"><div class="ey">Traveler Stories</div><h2 class="st">Voices of <em>Wonder</em></h2></div>
+  <div class="tg rv">
+    <div class="tc">
+      <div class="tst"><span>★</span><span>★</span><span>★</span><span>★</span><span>★</span></div>
+      <div class="tqm">"</div>
+      <p class="tt">LUXE VOYAGE turned my Santorini dream into something beyond imagination. Every detail — the cave suite, the sunset sail — was absolutely flawless.</p>
+      <div class="tau"><div class="tav">👩</div><div><div class="tnm">Priya Sharma</div><div class="tlc">Mumbai, India · Santorini</div></div></div>
+    </div>
+    <div class="tc">
+      <div class="tst"><span>★</span><span>★</span><span>★</span><span>★</span><span>★</span></div>
+      <div class="tqm">"</div>
+      <p class="tt">The Japan cherry blossom itinerary was a masterpiece. Private ryokan, bullet train passes, tea ceremony — every experience was extraordinary.</p>
+      <div class="tau"><div class="tav">👨</div><div><div class="tnm">James McAllister</div><div class="tlc">London, UK · Japan Explorer</div></div></div>
+    </div>
+    <div class="tc">
+      <div class="tst"><span>★</span><span>★</span><span>★</span><span>★</span><span>★</span></div>
+      <div class="tqm">"</div>
+      <p class="tt">Our Maldives honeymoon overwater villa was the most romantic week of our lives. The team made every single moment feel magical.</p>
+      <div class="tau"><div class="tav">👫</div><div><div class="tnm">Sofia & Marco Rossi</div><div class="tlc">Milan, Italy · Maldives Honeymoon</div></div></div>
+    </div>
+  </div>
+</section>
+
+<!-- ── NEWSLETTER ── -->
+<div class="nlsec rv" id="contact">
+  <div class="nlt">
+    <span class="nley">✦ Stay Inspired</span>
+    <h2 class="nltt">Unlock Exclusive<br>Travel Deals</h2>
+    <p class="nlsb">Join 48,000+ travelers who get our weekly hidden gems, flash deals & destination guides.</p>
+  </div>
+  <div class="nlf">
+    <div class="nlir">
+      <input type="email" class="nli" placeholder="your@email.com"/>
+      <button class="nls">Subscribe →</button>
+    </div>
+    <span class="nln">✓ No spam. Unsubscribe anytime. We promise.</span>
+  </div>
+</div>
+
+<!-- ── CTA ── -->
+<section class="cta rv">
+  <div class="ctao"></div>
+  <span class="ctaey">✦ Ready for the adventure?</span>
+  <h2 class="ctat">Your Next<br>Chapter <span class="gr">Awaits</span></h2>
+  <p class="ctasb">Thousands of travelers trust LUXE VOYAGE to craft their most unforgettable adventures. Your turn.</p>
+  <div class="ctabs">
+    <a href="javascript:void(0)" onclick="goTo('destinations')"  class="bg"><span>Plan My Journey</span><span class="ai">→</span></a>
+    <a href="javascript:void(0)" onclick="goTo('packages')"  class="gh"><div class="pi">▶</div>View Packages</a>
+  </div>
+</section>
+
+<!-- ── FOOTER ── -->
+<footer>
+  <div class="fg">
+    <div>
+      <span class="flog">LUXE VOYAGE</span>
+      <p class="fdesc">Premium travel experiences crafted for the bold, curious, and those who believe life is best lived in motion.</p>
+      <div class="socs">
+        <a href="javascript:void(0)" class="sb2">🐦</a><a href="javascript:void(0)" class="sb2">📸</a>
+        <a href="javascript:void(0)" class="sb2">💼</a><a href="javascript:void(0)" class="sb2">▶️</a><a href="javascript:void(0)" class="sb2">📌</a>
+      </div>
+    </div>
+    <div class="fc"><h5>Destinations</h5><ul><li><a href="javascript:void(0)">Europe</a></li><li><a href="javascript:void(0)">Asia Pacific</a></li><li><a href="javascript:void(0)">Americas</a></li><li><a href="javascript:void(0)">Middle East</a></li><li><a href="javascript:void(0)">Africa</a></li></ul></div>
+    <div class="fc"><h5>Company</h5><ul><li><a href="javascript:void(0)">About Us</a></li><li><a href="javascript:void(0)">Our Story</a></li><li><a href="javascript:void(0)">Careers</a></li><li><a href="javascript:void(0)">Press Kit</a></li><li><a href="javascript:void(0)">Partners</a></li></ul></div>
+    <div class="fc"><h5>Support</h5><ul><li><a href="javascript:void(0)">Help Center</a></li><li><a href="javascript:void(0)">Booking Policy</a></li><li><a href="javascript:void(0)">Privacy Policy</a></li><li><a href="javascript:void(0)">Terms of Service</a></li><li><a href="javascript:void(0)">Contact Us</a></li></ul></div>
+  </div>
+  <div class="fb">
+    <p>© 2024 LUXE VOYAGE. All rights reserved.</p>
+    <p class="md">Made with <span>♥</span> for adventurers everywhere</p>
+  </div>
+</footer>
+
+<script>
+/* SMOOTH SCROLL — renamed to avoid window.scrollTo conflict */
+function goTo(id){
+  var mob=document.getElementById('mob');
+  if(mob) mob.classList.remove('open');
+  setTimeout(function(){
+    var el=document.getElementById(id);
+    if(el){el.scrollIntoView({behavior:'smooth',block:'start'});}
+  },50);
+  return false;
+}
+
+/* LOADER */
+window.addEventListener('load',()=>setTimeout(()=>document.getElementById('loader').classList.add('gone'),2100));
+
+/* CURSOR - desktop only */
+var isTouchDevice=('ontouchstart' in window)||navigator.maxTouchPoints>0;
+if(!isTouchDevice){
+  document.body.style.cursor='none';
+  const cur=document.getElementById('cur'),cr=document.getElementById('cr');
+  let mx=0,my=0,rx=0,ry=0;
+  document.addEventListener('mousemove',e=>{mx=e.clientX;my=e.clientY;cur.style.left=mx+'px';cur.style.top=my+'px';});
+  (function loop(){rx+=(mx-rx)*.13;ry+=(my-ry)*.13;cr.style.left=rx+'px';cr.style.top=ry+'px';requestAnimationFrame(loop);})();
+  document.querySelectorAll('a,button,.dc,.pc,.tc,.wp,.gi,.chip,.sb2,.sb').forEach(el=>{
+    el.addEventListener('mouseenter',()=>document.body.classList.add('hov'));
+    el.addEventListener('mouseleave',()=>document.body.classList.remove('hov'));
+  });
+}
+
+/* NAVBAR */
+window.addEventListener('scroll',()=>document.getElementById('nav').classList.toggle('sc',scrollY>60));
+
+/* MOBILE NAV */
+const mob=document.getElementById('mob');
+document.getElementById('hbg').addEventListener('click',()=>mob.classList.add('open'));
+document.getElementById('mobX').addEventListener('click',()=>mob.classList.remove('open'));
+function cm(){mob.classList.remove('open');}
+
+/* SCROLL REVEAL */
+const obs=new IntersectionObserver(en=>{en.forEach(e=>{if(e.isIntersecting)e.target.classList.add('vis');});},{threshold:.12});
+document.querySelectorAll('.rv,.rvl,.rvr').forEach(el=>obs.observe(el));
+
+/* COUNTERS */
+function runCounter(el){
+  const t=parseFloat(el.dataset.t),s=el.dataset.s||'';
+  let c=0;const inc=t/70;
+  const tm=setInterval(()=>{c=Math.min(c+inc,t);el.textContent=Math.round(c)+s;if(c>=t)clearInterval(tm);},22);
+}
+const so=new IntersectionObserver(en=>{
+  en.forEach(e=>{if(e.isIntersecting){e.target.querySelectorAll('.sn').forEach(runCounter);so.unobserve(e.target);}});
+},{threshold:.5});
+const stats=document.querySelector('.stats');if(stats)so.observe(stats);
+
+/* SPRINKLES — CSS driven, smooth on mobile */
+(function(){
+  var wrap=document.getElementById('sprinkles');
+  if(!wrap)return;
+  var cols=['rgba(255,45,120,','rgba(168,85,247,','rgba(192,38,211,','rgba(255,111,163,'];
+  var shapes=['50%','4px','2px'];
+  for(var i=0;i<40;i++){
+    var s=document.createElement('div');
+    s.className='sp';
+    var size=(Math.random()*4+1.5).toFixed(1)+'px';
+    var col=cols[~~(Math.random()*cols.length)];
+    var opacity=(Math.random()*.5+.15).toFixed(2);
+    var left=(Math.random()*100).toFixed(1)+'%';
+    var dur=(Math.random()*12+8).toFixed(1)+'s';
+    var delay=-(Math.random()*12).toFixed(1)+'s';
+    var br=shapes[~~(Math.random()*shapes.length)];
+    s.style.cssText='width:'+size+';height:'+size+';background:'+col+opacity+');left:'+left+';border-radius:'+br+';animation-duration:'+dur+';animation-delay:'+delay+';box-shadow:0 0 '+(Math.random()*6+2).toFixed(0)+'px '+col+'0.4)';
+    wrap.appendChild(s);
+  }
+})();
+
+/* SMOOTH SCROLL behavior */
+document.documentElement.style.scrollBehavior='smooth';
+
+/* 3D TILT on destination cards */
+document.querySelectorAll('.dc').forEach(card=>{
+  card.addEventListener('mousemove',e=>{
+    const r=card.getBoundingClientRect(),x=(e.clientX-r.left)/r.width-.5,y=(e.clientY-r.top)/r.height-.5;
+    card.style.transform=`translateY(-10px) scale(1.015) rotateY(${x*7}deg) rotateX(${-y*4}deg)`;
+  });
+  card.addEventListener('mouseleave',()=>{card.style.transform='';});
+});
+</script>
+</body>
+</html>
